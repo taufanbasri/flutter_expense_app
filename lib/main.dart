@@ -1,6 +1,5 @@
-import 'package:expense_app/transaction.dart';
+import 'package:expense_app/widgets/user_transactions.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +10,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: "Expense App",
       home: MyHomePage(),
     );
@@ -19,22 +18,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  final List<Transaction> transactions = [
-    Transaction(
-      id: 't1',
-      title: 'New Shoes',
-      amount: 75.5,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Weekly Groceries',
-      amount: 50.4,
-      date: DateTime.now(),
-    ),
-  ];
-
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,75 +36,7 @@ class MyHomePage extends StatelessWidget {
               child: Text("Chart"),
             ),
           ),
-          Card(
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  const TextField(
-                    decoration: InputDecoration(labelText: 'Title'),
-                  ),
-                  const TextField(
-                    decoration: InputDecoration(labelText: 'Amount'),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(primary: Colors.purple),
-                    child: const Text("Add Transaction"),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Column(
-            children: transactions.map(
-              (tx) {
-                return Card(
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 15,
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.purple,
-                            width: 2,
-                          ),
-                        ),
-                        child: Text(
-                          "\$ ${tx.amount}",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.purple),
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            tx.title,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            DateFormat.yMMMd().format(tx.date),
-                            style: const TextStyle(color: Colors.grey),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                );
-              },
-            ).toList(),
-          )
+          const UserTransactions()
         ],
       ),
     );
