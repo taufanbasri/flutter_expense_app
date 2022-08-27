@@ -111,6 +111,55 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  List<Widget> _buildLandscapeContent(
+    MediaQueryData mediaQuery,
+    AppBar appBar,
+    Widget transactionListWidget,
+  ) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text("Show Chart"),
+          Switch.adaptive(
+            value: _showChart,
+            onChanged: (val) {
+              setState(() {
+                _showChart = val;
+              });
+            },
+          ),
+        ],
+      ),
+      _showChart
+          ? Container(
+              height: (mediaQuery.size.height -
+                      appBar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.7,
+              child: Chart(_recenTransactions),
+            )
+          : transactionListWidget
+    ];
+  }
+
+  List<Widget> _buildPortraitContent(
+    MediaQueryData mediaQuery,
+    AppBar appBar,
+    Widget transactionListWidget,
+  ) {
+    return [
+      Container(
+        height: (mediaQuery.size.height -
+                appBar.preferredSize.height -
+                mediaQuery.padding.top) *
+            0.3,
+        child: Chart(_recenTransactions),
+      ),
+      transactionListWidget
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     print("build() HomePageState");
@@ -144,39 +193,17 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               if (isLandscape)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Show Chart"),
-                    Switch.adaptive(
-                      value: _showChart,
-                      onChanged: (val) {
-                        setState(() {
-                          _showChart = val;
-                        });
-                      },
-                    ),
-                  ],
+                ..._buildLandscapeContent(
+                  mediaQuery,
+                  appBar,
+                  transactionListWidget,
                 ),
               if (!isLandscape)
-                Container(
-                  height: (mediaQuery.size.height -
-                          appBar.preferredSize.height -
-                          mediaQuery.padding.top) *
-                      0.3,
-                  child: Chart(_recenTransactions),
+                ..._buildPortraitContent(
+                  mediaQuery,
+                  appBar,
+                  transactionListWidget,
                 ),
-              if (!isLandscape) transactionListWidget,
-              if (isLandscape)
-                _showChart
-                    ? Container(
-                        height: (mediaQuery.size.height -
-                                appBar.preferredSize.height -
-                                mediaQuery.padding.top) *
-                            0.7,
-                        child: Chart(_recenTransactions),
-                      )
-                    : transactionListWidget,
             ],
           ),
         ),
